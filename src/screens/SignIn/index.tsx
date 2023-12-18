@@ -1,10 +1,10 @@
 import { Container } from "./styles";
-import { Input } from "../../components/Input";
+import { Button } from "../../components/Button";
 
 export function SignIn() {
   return (
     <Container>
-     <Input placeholder="Digite seu negócio aqui" onChangeText={(value) => console.log(value)}/>
+     <Button title={"Entra com Google"} onPress={(e) => console.log('chegando aqui')}/>
     </Container>
   );
 }

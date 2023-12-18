@@ -15,4 +15,6 @@ export const Container = styled.TextInput`
 
   font-family: ${theme.FONT_FAMILY.REGULAR};
   font-size: ${theme.FONT_SIZE.MD}px;
+
+  margin-top: 96px;
 `;
