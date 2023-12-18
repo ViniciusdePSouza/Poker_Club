@@ -17,7 +17,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar barStyle={"dark-content"} backgroundColor={'transparent'} translucent/>
+      <StatusBar barStyle={"light-content"} backgroundColor={'transparent'} translucent/>
      {fontsLoaded ?  <SignIn /> : <Loading/>}
     </ThemeProvider>
   );

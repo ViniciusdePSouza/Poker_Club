@@ -12,13 +12,11 @@ export const Container = styled.TouchableOpacity`
   background-color: ${theme.COLORS.YELLOW_700};
 
   border-radius: 6px;
-
-  margin-top: 36px;
 `;
 
 export const ButtonText = styled.Text`
   font-family: ${theme.FONT_FAMILY.BOLD};
   font-size: ${theme.FONT_SIZE.LG}px;
 
-  color: ${theme.COLORS.GRAY_300};
+  color: ${theme.COLORS.GRAY_500};
 `;
