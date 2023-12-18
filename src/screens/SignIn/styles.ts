@@ -8,6 +8,8 @@ export const Container = styled.View`
   color: #000;
 
   background-color: ${theme.COLORS.GRAY_400};
+
+  padding: 50px
 `;
 
 export const TextSignIn = styled.Text`
