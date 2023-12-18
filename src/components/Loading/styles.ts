@@ -1,0 +1,14 @@
+import styled from "styled-components/native";
+import theme from "../../theme";
+
+export const Container = styled.View`
+flex:1;
+align-items:center;
+justify-content: center;
+
+background-color: ${theme.COLORS.GRAY_400};
+`
+
+export const LoadIndicator = styled.ActivityIndicator.attrs(({theme}: any) => {
+    color: theme.COLORS.YELLOW_500
+})``
