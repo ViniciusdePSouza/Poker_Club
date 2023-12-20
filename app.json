@@ -22,9 +22,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
+      
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6c124370-2853-4164-b68d-014410756e55"
+      }
+    },
+    "scheme": "PokerClub"
   }
 }

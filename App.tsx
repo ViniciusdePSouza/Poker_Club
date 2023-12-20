@@ -1,5 +1,5 @@
 import { ThemeProvider } from "styled-components";
-import { SignIn } from "./src/screens/SignIn";
+import { Home } from "./src/screens/Home";
 import theme from "./src/theme";
 import {
   useFonts,
@@ -8,6 +8,7 @@ import {
 } from "@expo-google-fonts/roboto";
 import { Loading } from "./src/components/Loading";
 import { StatusBar } from "react-native";
+import { Routes } from "./src/routes";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -17,8 +18,12 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar barStyle={"light-content"} backgroundColor={'transparent'} translucent/>
-     {fontsLoaded ?  <SignIn /> : <Loading/>}
+      <StatusBar
+        barStyle={"light-content"}
+        backgroundColor={"transparent"}
+        translucent
+      />
+      {fontsLoaded ? <Routes/> : <Loading />}
     </ThemeProvider>
   );
 }
