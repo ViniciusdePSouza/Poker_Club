@@ -13,13 +13,27 @@ import theme from "../../theme";
 import { Icon } from "@rneui/themed";
 import { useState } from "react";
 import { CheckBox } from "react-native-elements";
+import { Players } from "../../@types/players";
 
-export interface PlayerCardProps {
-  name: string;
-}
+interface PlayerCardProps extends Omit<Players, "id" | 'total'> {}
 
-export function PlayerCard({ name }: PlayerCardProps) {
-  const [isChecked, setIsChecked] = useState(false);
+export function PlayerCard({
+  name,
+  addOn,
+  isPlaying,
+  rebuys,
+}: PlayerCardProps) {
+  const [isChecked, setIsChecked] = useState(addOn);
+  const [rebuysCounter, setRebuysCounter] = useState(rebuys);
+
+  function operation(isAdding: boolean) {
+    if (isAdding) {
+      setRebuysCounter((state) => state + 1);
+     
+      return;
+    }
+    setRebuysCounter((state) => state - 1);
+  }
 
   return (
     <Container>
@@ -30,16 +44,19 @@ export function PlayerCard({ name }: PlayerCardProps) {
       <Box>
         <AddOnBox>
           <TextContent>ADD-ON</TextContent>
-          <CheckBox checkedColor={theme.COLORS.YELLOW_700} checked={isChecked}
-        onPress={() => setIsChecked(!isChecked)}/>
+          <CheckBox
+            checkedColor={theme.COLORS.YELLOW_700}
+            checked={isChecked}
+            onPress={() => setIsChecked(!isChecked)}
+          />
         </AddOnBox>
-        <Button>
+        <Button onPress={() => operation(false)}>
           <Icon type="entypo" name="minus" color={theme.COLORS.WHITE} />
         </Button>
 
-        <Title>3</Title>
+        <Title>{String(rebuysCounter)}</Title>
 
-        <Button>
+        <Button onPress={() => operation(true)}>
           <Title>
             <Icon type="entypo" name="plus" color={theme.COLORS.WHITE} />
           </Title>

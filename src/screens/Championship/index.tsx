@@ -4,38 +4,24 @@ import { Icon } from "@rneui/themed";
 import { Input } from "../../components/Input";
 import { useState } from "react";
 import { PlayerCard } from "../../components/PlayerCard";
+import { Players } from "../../@types/players";
 
 export function Championship() {
-  const [players, setPlayers] = useState<String[]>([
-    "Vini",
-    "Ian",
-    "Junim",
-    "Luan",
+  const [players, setPlayers] = useState<Players[]>([
+    { id: 1, name: "Vini", addOn: true, rebuys: 5, isPlaying: true, total: 40 },
+    { id: 2, name: "Junim", addOn: true, rebuys: 5, isPlaying: true, total: 40 },
+    { id: 3, name: "Ian", addOn: true, rebuys: 5, isPlaying: true, total: 40},
+    { id: 4, name: "Luan", addOn: true, rebuys: 5, isPlaying: true, total: 40 },
   ]);
-  const [inputPlayer, setInputPlayer] = useState("");
-
-  function handleButton(newPlayer: string) {
-    setPlayers([...players, newPlayer]);
-  }
 
   const HeaderFlatList = () => {
     return (
       <>
         <Title>Championship Info</Title>
         <InputWrapper>
-          <Input
-            placeholder="Insira o nome do jogador"
-            onChangeText={(text: string) => {
-              setInputPlayer(text);
-            }}
-          />
+          <Input placeholder="Insira o nome do jogador" />
           <AddButton>
-            <Icon
-              type="ant-design"
-              name="pluscircle"
-              size={24}
-              onPress={() => handleButton(inputPlayer)}
-            />
+            <Icon type="ant-design" name="pluscircle" size={24} />
           </AddButton>
         </InputWrapper>
 
@@ -46,14 +32,14 @@ export function Championship() {
 
   return (
     <SafeAreaView>
-        <PlayersList
-          ListHeaderComponent={<HeaderFlatList />}
-          data={players}
-          renderItem={({ item }: { item: string }) => (
-            <PlayerCard name={item} />
-          )}
-          keyExtractor={({ item }: { item: string }) => item}
-        />
+      <PlayersList
+        ListHeaderComponent={<HeaderFlatList />}
+        data={players}
+        renderItem={({ item }: { item: Players }) => (
+          <PlayerCard name={item.name} isPlaying={item.isPlaying} rebuys={item.rebuys} addOn={item.addOn} />
+        )}
+        keyExtractor={({ id }: Players) => String(id)}
+      />
     </SafeAreaView>
   );
 }
