@@ -17,9 +17,9 @@ import { Controller, useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Pressable, StyleSheet } from "react-native";
 import theme from "../../theme";
 import { Swipeable } from "react-native-gesture-handler";
+import { Alert } from "react-native";
 
 type AddPlayerFormData = {
   name: string;
@@ -67,11 +67,21 @@ export function Championship() {
     setPlayers([...players, newPlayer]);
   }
 
-  function handleRemovePlayer(id: number) {
-    console.log('chegnado')
-    const newPlayersArray = players.filter(player => player.id !== id)
+  function remove(id: number) {
+    const newPlayersArray = players.filter((player) => player.id !== id);
 
-    setPlayers(newPlayersArray)
+    setPlayers(newPlayersArray);
+  }
+
+  function handleRemovePlayer(id: number) {
+    Alert.alert(
+      "Remove Player",
+      "Are you sure you want to remove this player?",
+      [
+        { text: "Yes", onPress: () => remove(id) },
+        { text: "No", style: "cancel" },
+      ]
+    );
   }
 
   const HeaderFlatList = () => {
@@ -138,4 +148,3 @@ export function Championship() {
     </SafeAreaView>
   );
 }
-
