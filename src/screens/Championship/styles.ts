@@ -45,3 +45,14 @@ max-height: 56px;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 `;
+
+export const DeletePlayerMenu = styled.Pressable`
+ height: 70px;
+ width: 70px;
+ margin-top: 20px;
+ margin-right: 16px;
+ border-radius: 6px;
+ background-color: ${theme.COLORS.RED_DARK};
+ justify-content: center;
+ align-items: center;
+`

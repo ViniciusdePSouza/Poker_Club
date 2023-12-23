@@ -1,5 +1,6 @@
+import 'react-native-gesture-handler';
+
 import { ThemeProvider } from "styled-components";
-import { Home } from "./src/screens/Home";
 import theme from "./src/theme";
 import {
   useFonts,
@@ -9,6 +10,7 @@ import {
 import { Loading } from "./src/components/Loading";
 import { StatusBar } from "react-native";
 import { Routes } from "./src/routes";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -17,13 +19,15 @@ export default function App() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <StatusBar
-        barStyle={"light-content"}
-        backgroundColor={"transparent"}
-        translucent
-      />
-      {fontsLoaded ? <Routes/> : <Loading />}
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider theme={theme}>
+        <StatusBar
+          barStyle={"light-content"}
+          backgroundColor={"transparent"}
+          translucent
+        />
+        {fontsLoaded ? <Routes /> : <Loading />}
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
