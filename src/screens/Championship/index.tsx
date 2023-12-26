@@ -19,7 +19,7 @@ import { Alert, Animated } from "react-native";
 
 import { Icon } from "@rneui/themed";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -27,6 +27,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { Swipeable } from "react-native-gesture-handler";
+import { FooterFlatList } from "../../components/FooterFlatList";
+import { usePlayers } from "../../hooks/playersContext";
 
 type AddPlayerFormData = {
   name: string;
@@ -37,26 +39,7 @@ const AddPlayerSchema = yup.object({
 });
 
 export function Championship() {
-  const [players, setPlayers] = useState<Players[]>([
-    { id: 1, name: "Vini", addOn: true, rebuys: 0, isPlaying: true, total: 40 },
-    {
-      id: 2,
-      name: "Junim",
-      addOn: true,
-      rebuys: 0,
-      isPlaying: true,
-      total: 40,
-    },
-    { id: 3, name: "Ian", addOn: true, rebuys: 0, isPlaying: false, total: 40 },
-    {
-      id: 4,
-      name: "Luan",
-      addOn: true,
-      rebuys: 0,
-      isPlaying: false,
-      total: 40,
-    },
-  ]);
+  const { players, addNewPlayer, deletePlayer, disqualify } = usePlayers();
 
   const {
     control,
@@ -70,40 +53,12 @@ export function Championship() {
     const doesPlayerExists = players.find((player) => player.name === name);
 
     if (doesPlayerExists) {
-      Alert.alert("This player is already in the tournament");
+      Alert.alert("This player is already registered in the tournament");
 
       return;
     }
 
-    const id = Math.random() * 100 + 1;
-
-    const newPlayer = {
-      id,
-      name,
-      addOn: true,
-      rebuys: 0,
-      isPlaying: true,
-      total: 40,
-    };
-
-    setPlayers([...players, newPlayer]);
-  }
-
-  function remove(id: number) {
-    const newPlayersArray = players.filter((player) => player.id !== id);
-
-    setPlayers(newPlayersArray);
-  }
-
-  function disqualify(id: number) {
-    setPlayers((prevPlayers) => {
-      return prevPlayers.map((player) => {
-        if (player.id === id) {
-          return { ...player, isPlaying: !player.isPlaying };
-        }
-        return player;
-      });
-    });
+    addNewPlayer(name);
   }
 
   function handleRemovePlayer(id: number) {
@@ -111,7 +66,7 @@ export function Championship() {
       "Remove Player",
       "Are you sure you want to remove this player?",
       [
-        { text: "Yes", onPress: () => remove(id) },
+        { text: "Yes", onPress: () => deletePlayer(id) },
         { text: "No", style: "cancel" },
       ]
     );
@@ -169,6 +124,7 @@ export function Championship() {
     <SafeAreaView>
       <PlayersList
         ListHeaderComponent={<HeaderFlatList />}
+        ListFooterComponent={<FooterFlatList />}
         data={players}
         renderItem={({ item }: { item: Players }) => (
           <Swipeable
