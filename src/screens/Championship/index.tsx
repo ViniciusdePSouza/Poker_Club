@@ -1,25 +1,32 @@
+import { Players } from "../../@types/players";
+
+import theme from "../../theme";
+
 import {
   AddButton,
-  DeletePlayerMenu,
   InputWrapper,
   PlayersList,
+  PressablePlayerMenu,
   Title,
   Tittle2,
 } from "./styles";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Icon, SocialIcon } from "@rneui/themed";
+
 import { Input } from "../../components/Input";
-import { useState } from "react";
 import { PlayerCard } from "../../components/PlayerCard";
-import { Players } from "../../@types/players";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Alert, Animated } from "react-native";
+
+import { Icon } from "@rneui/themed";
+
+import { useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import theme from "../../theme";
+
 import { Swipeable } from "react-native-gesture-handler";
-import { Alert } from "react-native";
 
 type AddPlayerFormData = {
   name: string;
@@ -40,8 +47,15 @@ export function Championship() {
       isPlaying: true,
       total: 40,
     },
-    { id: 3, name: "Ian", addOn: true, rebuys: 0, isPlaying: true, total: 40 },
-    { id: 4, name: "Luan", addOn: true, rebuys: 0, isPlaying: true, total: 40 },
+    { id: 3, name: "Ian", addOn: true, rebuys: 0, isPlaying: false, total: 40 },
+    {
+      id: 4,
+      name: "Luan",
+      addOn: true,
+      rebuys: 0,
+      isPlaying: false,
+      total: 40,
+    },
   ]);
 
   const {
@@ -73,6 +87,17 @@ export function Championship() {
     setPlayers(newPlayersArray);
   }
 
+  function disqualify(id: number) {
+    setPlayers((prevPlayers) => {
+      return prevPlayers.map((player) => {
+        if (player.id === id) {
+          return { ...player, isPlaying: !player.isPlaying };
+        }
+        return player;
+      });
+    });
+  }
+
   function handleRemovePlayer(id: number) {
     Alert.alert(
       "Remove Player",
@@ -82,6 +107,23 @@ export function Championship() {
         { text: "No", style: "cancel" },
       ]
     );
+  }
+
+  function disqualifyPlayer(id: number) {
+    let currentPlayer = players.find((player) => player.id === id);
+
+    const titleButton = currentPlayer?.isPlaying
+      ? "Desclassifie Player"
+      : "Rejoin Player";
+    const textButton = currentPlayer?.isPlaying
+      ? "Are you sure you want to disqualify this player?"
+      : "Are you sure you want to rejoin this player?";
+
+    Alert.alert(titleButton, textButton, [
+      { text: "Yes", onPress: () => disqualify(id) },
+      { text: "No", style: "cancel" },
+    ]);
+
   }
 
   const HeaderFlatList = () => {
@@ -122,20 +164,39 @@ export function Championship() {
         data={players}
         renderItem={({ item }: { item: Players }) => (
           <Swipeable
+            renderRightActions={() => {
+              return (
+                <PressablePlayerMenu
+                  variant="DECLASSIFIED"
+                  onPress={() => disqualifyPlayer(item.id)}
+                >
+                  <Icon
+                    type="font-awesome"
+                    name="close"
+                    color={theme.COLORS.GRAY_400}
+                    size={46}
+                  />
+                </PressablePlayerMenu>
+              );
+            }}
             renderLeftActions={() => {
               return (
-                <DeletePlayerMenu onPress={() => handleRemovePlayer(item.id)}>
+                <PressablePlayerMenu
+                  variant="REMOVE"
+                  onPress={() => handleRemovePlayer(item.id)}
+                >
                   <Icon
                     type="entypo"
                     name="trash"
                     color={theme.COLORS.GRAY_400}
                     size={28}
                   />
-                </DeletePlayerMenu>
+                </PressablePlayerMenu>
               );
             }}
           >
             <PlayerCard
+              variant={item.isPlaying}
               name={item.name}
               isPlaying={item.isPlaying}
               rebuys={item.rebuys}

@@ -1,7 +1,13 @@
 import styled from "styled-components/native";
 import theme from "../../theme";
 
-export const Container = styled.View`
+export type PlayerCardVariantColor = boolean;
+
+interface PlayerCardProps {
+  variant: PlayerCardVariantColor;
+}
+
+export const Container = styled.View<PlayerCardProps>`
   flex-direction: row;
   align-items: center;
   position: relative;
@@ -10,7 +16,10 @@ export const Container = styled.View`
 
   gap: 24px;
 
-  background-color: ${theme.COLORS.GREEN_700};
+  ${(props: PlayerCardProps) =>
+    props.variant
+      ? `background-color: ${theme.COLORS.GREEN_700};`
+      : `background-color: ${theme.COLORS.GRAY_300};`}
 
   border-radius: 8px;
 
@@ -65,6 +74,15 @@ export const AddOnBox = styled.View`
 export const TextContent = styled.Text`
   font-family: ${theme.FONT_FAMILY.REGULAR};
   font-size: ${theme.FONT_SIZE.SM}px;
+
+  color: ${theme.COLORS.GRAY_200};
+`;
+
+export const EliminationText = styled.Text`
+  flex: 1;
+  text-align: right;
+  font-family: ${theme.FONT_FAMILY.BOLD};
+  font-size: ${theme.FONT_SIZE.MD}px;
 
   color: ${theme.COLORS.GRAY_200};
 `;
