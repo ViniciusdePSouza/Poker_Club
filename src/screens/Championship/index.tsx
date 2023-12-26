@@ -19,7 +19,7 @@ import { Alert, Animated } from "react-native";
 
 import { Icon } from "@rneui/themed";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -67,6 +67,14 @@ export function Championship() {
   });
 
   function handleAddPlayer({ name }: AddPlayerFormData) {
+    const doesPlayerExists = players.find((player) => player.name === name);
+
+    if (doesPlayerExists) {
+      Alert.alert("This player is already in the tournament");
+
+      return;
+    }
+
     const id = Math.random() * 100 + 1;
 
     const newPlayer = {
@@ -123,7 +131,6 @@ export function Championship() {
       { text: "Yes", onPress: () => disqualify(id) },
       { text: "No", style: "cancel" },
     ]);
-
   }
 
   const HeaderFlatList = () => {
@@ -142,6 +149,7 @@ export function Championship() {
                   value={value}
                   errorMessage={errors.name?.message}
                   placeholder="Insira o nome do jogador"
+                  onSubmitEditing={handleSubmit(handleAddPlayer)}
                 />
               );
             }}
