@@ -14,15 +14,18 @@ import Chip from "../../assets/chip.png";
 import Elimination from "../../assets/elimination.png";
 import theme from "../../theme";
 import { Icon } from "@rneui/themed";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { Players } from "../../@types/players";
+import { usePlayers } from "../../hooks/playersContext";
+import { Alert } from "react-native";
 
-interface PlayerCardProps extends Omit<Players, "id" | "total"> {
+interface PlayerCardProps extends Omit<Players, "total"> {
   variant: PlayerCardVariantColor;
 }
 
 export function PlayerCard({
+  id,
   name,
   addOn,
   isPlaying,
@@ -30,6 +33,8 @@ export function PlayerCard({
 }: PlayerCardProps) {
   const [isChecked, setIsChecked] = useState(addOn);
   const [rebuysCounter, setRebuysCounter] = useState(rebuys);
+  const [player, setPlayer] = useState<Players>({} as Players);
+  const { players } = usePlayers();
 
   function operation(isAdding: boolean) {
     if (isAdding) {
@@ -39,6 +44,12 @@ export function PlayerCard({
     }
     setRebuysCounter((state) => state - 1);
   }
+
+  useEffect(() => {
+    const currentPlayer = players.find((player) => player.id === id);
+
+    if (currentPlayer) setPlayer(currentPlayer);
+  }, [id, players]);
 
   return (
     <Container variant={isPlaying}>
@@ -66,7 +77,11 @@ export function PlayerCard({
             <Icon type="entypo" name="plus" color={theme.COLORS.WHITE} />
           </Button>
         </Box>
-      ) : <EliminationText>Eliminado ! </EliminationText>}
+      ) : (
+        <EliminationText>
+          Eliminado! Position: {`${player.position}/${players.length}`}{" "}
+        </EliminationText>
+      )}
     </Container>
   );
 }

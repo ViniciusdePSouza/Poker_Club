@@ -1,9 +1,9 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { Players } from "../@types/players";
-import { Alert } from "react-native";
 
 interface PlayersContextType {
   players: Players[];
+  eliminatedPlayers: Players[];
   addNewPlayer(name: string): void;
   deletePlayer(id: number): void;
   disqualify(id: number): void;
@@ -17,7 +17,15 @@ export const PlayersContext = createContext({} as PlayersContextType);
 
 function PlayersProvider({ children }: PlayersProviderProps) {
   const [players, setPlayers] = useState<Players[]>([
-    { id: 1, name: "Vini", addOn: true, rebuys: 0, isPlaying: true, total: 40 },
+    {
+      id: 1,
+      name: "Vini",
+      addOn: true,
+      rebuys: 0,
+      isPlaying: true,
+      total: 40,
+      position: null,
+    },
     {
       id: 2,
       name: "Junim",
@@ -25,17 +33,29 @@ function PlayersProvider({ children }: PlayersProviderProps) {
       rebuys: 0,
       isPlaying: true,
       total: 40,
+      position: null,
     },
-    { id: 3, name: "Ian", addOn: true, rebuys: 0, isPlaying: false, total: 40 },
+    {
+      id: 3,
+      name: "Ian",
+      addOn: true,
+      rebuys: 0,
+      isPlaying: true,
+      total: 40,
+      position: null,
+    },
     {
       id: 4,
       name: "Luan",
       addOn: true,
       rebuys: 0,
-      isPlaying: false,
+      isPlaying: true,
       total: 40,
+      position: null,
     },
   ]);
+
+  const [eliminatedPlayers, setEliminatedPlayers] = useState<Players[]>([]);
 
   function addNewPlayer(name: string) {
     const id = Math.random() * 100 + 1;
@@ -47,6 +67,7 @@ function PlayersProvider({ children }: PlayersProviderProps) {
       rebuys: 0,
       isPlaying: true,
       total: 40,
+      position: null,
     };
 
     setPlayers([...players, newPlayer]);
@@ -59,10 +80,13 @@ function PlayersProvider({ children }: PlayersProviderProps) {
   }
 
   function disqualify(id: number) {
+    const position = players.length - eliminatedPlayers.length;
+
     setPlayers((prevPlayers) => {
       return prevPlayers.map((player) => {
         if (player.id === id) {
-          return { ...player, isPlaying: !player.isPlaying };
+          setEliminatedPlayers((prevPlayers) => [...prevPlayers, player]);
+          return { ...player, isPlaying: !player.isPlaying, position };
         }
         return player;
       });
@@ -71,7 +95,13 @@ function PlayersProvider({ children }: PlayersProviderProps) {
 
   return (
     <PlayersContext.Provider
-      value={{ players, addNewPlayer, deletePlayer, disqualify }}
+      value={{
+        players,
+        addNewPlayer,
+        deletePlayer,
+        disqualify,
+        eliminatedPlayers,
+      }}
     >
       {children}
     </PlayersContext.Provider>

@@ -5,4 +5,5 @@ export interface Players {
     id: number;
     addOn: boolean;
     total: number
+    position?: number | null;
 }

@@ -39,7 +39,7 @@ const AddPlayerSchema = yup.object({
 });
 
 export function Championship() {
-  const { players, addNewPlayer, deletePlayer, disqualify } = usePlayers();
+  const { players, addNewPlayer, deletePlayer, disqualify, eliminatedPlayers } = usePlayers();
 
   const {
     control,
@@ -73,17 +73,17 @@ export function Championship() {
   }
 
   function disqualifyPlayer(id: number) {
-    let currentPlayer = players.find((player) => player.id === id);
+    const currentPlayer = players.find((player) => player.id === id);
 
     const titleButton = currentPlayer?.isPlaying
-      ? "Desclassifie Player"
+      ? "Disqualify Player"
       : "Rejoin Player";
     const textButton = currentPlayer?.isPlaying
       ? "Are you sure you want to disqualify this player?"
       : "Are you sure you want to rejoin this player?";
 
     Alert.alert(titleButton, textButton, [
-      { text: "Yes", onPress: () => disqualify(id) },
+      { text: "Yes", onPress: () => disqualify(id)},
       { text: "No", style: "cancel" },
     ]);
   }
@@ -160,6 +160,8 @@ export function Championship() {
             }}
           >
             <PlayerCard
+            
+            id={item.id}
               variant={item.isPlaying}
               name={item.name}
               isPlaying={item.isPlaying}
