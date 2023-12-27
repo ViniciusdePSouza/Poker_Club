@@ -8,7 +8,7 @@ import {
   PlayersList,
   PressablePlayerMenu,
   Title,
-  Tittle2,
+  Title2,
 } from "./styles";
 
 import { Input } from "../../components/Input";
@@ -24,7 +24,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import { ScrollView, Swipeable } from "react-native-gesture-handler";
+import { Swipeable } from "react-native-gesture-handler";
 import { FooterFlatList } from "../../components/FooterFlatList";
 import { usePlayers } from "../../hooks/playersContext";
 
@@ -112,64 +112,71 @@ export function Championship() {
             <Icon type="ant-design" name="pluscircle" size={24} />
           </AddButton>
         </InputWrapper>
-
-        <Tittle2>Players List</Tittle2>
+        <View style={{ width: '100%', flexDirection: "row", justifyContent: "space-between"}}>
+        <Title2>Players List</Title2>
+          <Title2>
+            Remaining Players: {' '}
+            <Text style={{ color: theme.COLORS.YELLOW_700 }}>
+              { players.length - eliminatedPlayers.length}
+            </Text>
+            /{players.length}
+          </Title2>
+        </View>
       </>
     );
   };
 
   return (
     <SafeAreaView>
-        <PlayersList
-          ListHeaderComponent={<HeaderFlatList />}
-          ListFooterComponent={<FooterFlatList />}
-          data={players}
-          renderItem={({ item }: { item: Players }) => (
-            <Swipeable
-              renderRightActions={() => {
-                return (
-                  <PressablePlayerMenu
-                    variant="DECLASSIFIED"
-                    onPress={() => disqualifyPlayer(item.id)}
-                  >
-                    <Icon
-                      type="font-awesome"
-                      name="close"
-                      color={theme.COLORS.GRAY_400}
-                      size={46}
-                    />
-                  </PressablePlayerMenu>
-                );
-              }}
-              renderLeftActions={() => {
-                return (
-                  <PressablePlayerMenu
-                    variant="REMOVE"
-                    onPress={() => handleRemovePlayer(item.id)}
-                  >
-                    <Icon
-                      type="entypo"
-                      name="trash"
-                      color={theme.COLORS.GRAY_400}
-                      size={28}
-                    />
-                  </PressablePlayerMenu>
-                );
-              }}
-            >
-              <PlayerCard
-                id={item.id}
-                variant={item.isPlaying}
-                name={item.name}
-                isPlaying={item.isPlaying}
-                rebuys={item.rebuys}
-                addOn={item.addOn}
-              />
-            </Swipeable>
-          )}
-          keyExtractor={({ id }: Players) => String(id)}
-        />
-
+      <PlayersList
+        ListHeaderComponent={<HeaderFlatList />}
+        ListFooterComponent={<FooterFlatList />}
+        data={players}
+        renderItem={({ item }: { item: Players }) => (
+          <Swipeable
+            renderRightActions={() => {
+              return (
+                <PressablePlayerMenu
+                  variant="DECLASSIFIED"
+                  onPress={() => disqualifyPlayer(item.id)}
+                >
+                  <Icon
+                    type="font-awesome"
+                    name="close"
+                    color={theme.COLORS.GRAY_400}
+                    size={46}
+                  />
+                </PressablePlayerMenu>
+              );
+            }}
+            renderLeftActions={() => {
+              return (
+                <PressablePlayerMenu
+                  variant="REMOVE"
+                  onPress={() => handleRemovePlayer(item.id)}
+                >
+                  <Icon
+                    type="entypo"
+                    name="trash"
+                    color={theme.COLORS.GRAY_400}
+                    size={28}
+                  />
+                </PressablePlayerMenu>
+              );
+            }}
+          >
+            <PlayerCard
+              id={item.id}
+              variant={item.isPlaying}
+              name={item.name}
+              isPlaying={item.isPlaying}
+              rebuys={item.rebuys}
+              addOn={item.addOn}
+            />
+          </Swipeable>
+        )}
+        keyExtractor={({ id }: Players) => String(id)}
+      />
     </SafeAreaView>
   );
 }

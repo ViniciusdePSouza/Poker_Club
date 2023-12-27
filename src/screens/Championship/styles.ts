@@ -37,8 +37,7 @@ export const Title = styled.Text`
   color: ${theme.COLORS.WHITE};
 `;
 
-export const Tittle2 = styled.Text`
-  width: 100%;
+export const Title2 = styled.Text`
 
   font-family: ${theme.FONT_FAMILY.BOLD};
   font-size: ${theme.FONT_SIZE.LG}px;
