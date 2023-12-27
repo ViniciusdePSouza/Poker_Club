@@ -15,11 +15,9 @@ import { Input } from "../../components/Input";
 import { PlayerCard } from "../../components/PlayerCard";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Alert, Animated } from "react-native";
+import { Alert, View, Text } from "react-native";
 
 import { Icon } from "@rneui/themed";
-
-import { useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -102,7 +100,6 @@ export function Championship() {
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
-                  errorMessage={errors.name?.message}
                   placeholder="Insira o nome do jogador"
                   onSubmitEditing={handleSubmit(handleAddPlayer)}
                 />

@@ -4,11 +4,8 @@ import { useTheme } from "styled-components";
 import { Icon } from "@rneui/themed";
 import theme from "../../theme";
 
-interface InputProps extends TextInputProps {
-  errorMessage?: string;
-}
 
-export function Input({ errorMessage = "", ...rest }: InputProps) {
+export function Input({ ...rest }: TextInputProps) {
   const { COLORS } = useTheme();
   return (
     <>
