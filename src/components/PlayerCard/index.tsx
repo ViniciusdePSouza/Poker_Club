@@ -18,7 +18,6 @@ import { useEffect, useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { Players } from "../../@types/players";
 import { usePlayers } from "../../hooks/playersContext";
-import { Alert } from "react-native";
 
 interface PlayerCardProps extends Omit<Players, "total"> {
   variant: PlayerCardVariantColor;
@@ -34,15 +33,19 @@ export function PlayerCard({
   const [isChecked, setIsChecked] = useState(addOn);
   const [rebuysCounter, setRebuysCounter] = useState(rebuys);
   const [player, setPlayer] = useState<Players>({} as Players);
-  const { players } = usePlayers();
+  const { players, modifyRebuy } = usePlayers();
 
-  function operation(isAdding: boolean) {
+  async function operation(isAdding: boolean) {
     if (isAdding) {
-      setRebuysCounter((state) => state + 1);
+      await setRebuysCounter((state) => state + 1);
 
+      modifyRebuy(id, rebuysCounter+1);
       return;
     }
-    setRebuysCounter((state) => state - 1);
+    await setRebuysCounter((state) => state - 1);
+
+    modifyRebuy(id, rebuysCounter-1);
+
   }
 
   useEffect(() => {

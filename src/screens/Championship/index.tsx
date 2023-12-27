@@ -24,7 +24,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import { Swipeable } from "react-native-gesture-handler";
+import { ScrollView, Swipeable } from "react-native-gesture-handler";
 import { FooterFlatList } from "../../components/FooterFlatList";
 import { usePlayers } from "../../hooks/playersContext";
 
@@ -37,7 +37,8 @@ const AddPlayerSchema = yup.object({
 });
 
 export function Championship() {
-  const { players, addNewPlayer, deletePlayer, disqualify, eliminatedPlayers } = usePlayers();
+  const { players, addNewPlayer, deletePlayer, disqualify, eliminatedPlayers } =
+    usePlayers();
 
   const {
     control,
@@ -81,7 +82,7 @@ export function Championship() {
       : "Are you sure you want to rejoin this player?";
 
     Alert.alert(titleButton, textButton, [
-      { text: "Yes", onPress: () => disqualify(id)},
+      { text: "Yes", onPress: () => disqualify(id) },
       { text: "No", style: "cancel" },
     ]);
   }
@@ -119,56 +120,56 @@ export function Championship() {
 
   return (
     <SafeAreaView>
-      <PlayersList
-        ListHeaderComponent={<HeaderFlatList />}
-        ListFooterComponent={<FooterFlatList />}
-        data={players}
-        renderItem={({ item }: { item: Players }) => (
-          <Swipeable
-            renderRightActions={() => {
-              return (
-                <PressablePlayerMenu
-                  variant="DECLASSIFIED"
-                  onPress={() => disqualifyPlayer(item.id)}
-                >
-                  <Icon
-                    type="font-awesome"
-                    name="close"
-                    color={theme.COLORS.GRAY_400}
-                    size={46}
-                  />
-                </PressablePlayerMenu>
-              );
-            }}
-            renderLeftActions={() => {
-              return (
-                <PressablePlayerMenu
-                  variant="REMOVE"
-                  onPress={() => handleRemovePlayer(item.id)}
-                >
-                  <Icon
-                    type="entypo"
-                    name="trash"
-                    color={theme.COLORS.GRAY_400}
-                    size={28}
-                  />
-                </PressablePlayerMenu>
-              );
-            }}
-          >
-            <PlayerCard
-            
-            id={item.id}
-              variant={item.isPlaying}
-              name={item.name}
-              isPlaying={item.isPlaying}
-              rebuys={item.rebuys}
-              addOn={item.addOn}
-            />
-          </Swipeable>
-        )}
-        keyExtractor={({ id }: Players) => String(id)}
-      />
+        <PlayersList
+          ListHeaderComponent={<HeaderFlatList />}
+          ListFooterComponent={<FooterFlatList />}
+          data={players}
+          renderItem={({ item }: { item: Players }) => (
+            <Swipeable
+              renderRightActions={() => {
+                return (
+                  <PressablePlayerMenu
+                    variant="DECLASSIFIED"
+                    onPress={() => disqualifyPlayer(item.id)}
+                  >
+                    <Icon
+                      type="font-awesome"
+                      name="close"
+                      color={theme.COLORS.GRAY_400}
+                      size={46}
+                    />
+                  </PressablePlayerMenu>
+                );
+              }}
+              renderLeftActions={() => {
+                return (
+                  <PressablePlayerMenu
+                    variant="REMOVE"
+                    onPress={() => handleRemovePlayer(item.id)}
+                  >
+                    <Icon
+                      type="entypo"
+                      name="trash"
+                      color={theme.COLORS.GRAY_400}
+                      size={28}
+                    />
+                  </PressablePlayerMenu>
+                );
+              }}
+            >
+              <PlayerCard
+                id={item.id}
+                variant={item.isPlaying}
+                name={item.name}
+                isPlaying={item.isPlaying}
+                rebuys={item.rebuys}
+                addOn={item.addOn}
+              />
+            </Swipeable>
+          )}
+          keyExtractor={({ id }: Players) => String(id)}
+        />
+
     </SafeAreaView>
   );
 }
