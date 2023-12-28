@@ -5,6 +5,9 @@ export default {
       YELLOW_700: '#f3a13d',
       YELLOW_500: '#fab545',
 
+      BRONZE_500: '#CD7F32',
+      BRONZE_700: '#986634',
+      
       GREEN_700: '#084f23',
       GREEN_500: '#145f32',
       GREEN_300: '#13a328',

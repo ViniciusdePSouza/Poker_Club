@@ -25,7 +25,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { Swipeable } from "react-native-gesture-handler";
-import { FooterFlatList } from "../../components/FooterFlatList";
 import { usePlayers } from "../../hooks/playersContext";
 
 type AddPlayerFormData = {
@@ -130,7 +129,6 @@ export function Championship() {
     <SafeAreaView>
       <PlayersList
         ListHeaderComponent={<HeaderFlatList />}
-        ListFooterComponent={<FooterFlatList />}
         data={players}
         renderItem={({ item }: { item: Players }) => (
           <Swipeable

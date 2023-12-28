@@ -35,17 +35,16 @@ export function PlayerCard({
   const [player, setPlayer] = useState<Players>({} as Players);
   const { players, modifyRebuy } = usePlayers();
 
-  async function operation(isAdding: boolean) {
+   function operation(isAdding: boolean) {
     if (isAdding) {
-      await setRebuysCounter((state) => state + 1);
+      setRebuysCounter((state) => state + 1);
 
-      modifyRebuy(id, rebuysCounter+1);
+      modifyRebuy(id, rebuysCounter + 1);
       return;
     }
-    await setRebuysCounter((state) => state - 1);
+     setRebuysCounter((state) => state - 1);
 
-    modifyRebuy(id, rebuysCounter-1);
-
+    modifyRebuy(id, rebuysCounter - 1);
   }
 
   useEffect(() => {
