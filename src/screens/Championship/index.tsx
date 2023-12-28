@@ -125,10 +125,15 @@ export function Championship() {
     );
   };
 
+  const FooterFlatList = () => {
+    return <View style={{height: 28,}}></View>
+  }
+
   return (
     <SafeAreaView>
       <PlayersList
         ListHeaderComponent={<HeaderFlatList />}
+        ListFooterComponent={<FooterFlatList />}
         data={players}
         renderItem={({ item }: { item: Players }) => (
           <Swipeable

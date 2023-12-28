@@ -14,7 +14,7 @@ export const Container = styled.View<PlayerCardProps>`
 
   padding: 16px;
 
-  gap: 24px;
+  gap:8px;
 
   ${(props: PlayerCardProps) =>
     props.variant
@@ -28,7 +28,7 @@ export const Container = styled.View<PlayerCardProps>`
 
 export const ChipImg = styled.Image`
   height: 40px;
-  width: 54px;
+  width: 48px;
 `;
 
 export const Title = styled.Text`

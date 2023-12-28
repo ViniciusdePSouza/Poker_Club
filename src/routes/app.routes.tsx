@@ -52,7 +52,7 @@ export function AppRoutes() {
         component={Championship}
         options={{
           tabBarIcon: ({ color }) => {
-            return <Icon name="trophy" type="entypo" size={36} color={color} />;
+            return <Icon name="users" type="entypo" size={32} color={color} />;
           },
         }}
       />

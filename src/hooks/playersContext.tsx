@@ -8,6 +8,7 @@ interface PlayersContextType {
   deletePlayer(id: number): void;
   disqualify(id: number): void;
   modifyRebuy(id: number, rebuysNumber: number): void;
+  modifyAddon(id: number, addON: boolean): void;
 }
 
 interface PlayersProviderProps {
@@ -106,6 +107,18 @@ function PlayersProvider({ children }: PlayersProviderProps) {
     });
   }
 
+  async function modifyAddon(id: number, addOn: boolean ) {
+    await setPlayers((prevPLayers) => {
+      return prevPLayers.map((player) => {
+        if (player.id === id) {
+          return { ...player, addOn };
+        }
+
+        return player;
+      });
+    });
+  }
+
   return (
     <PlayersContext.Provider
       value={{
@@ -114,7 +127,8 @@ function PlayersProvider({ children }: PlayersProviderProps) {
         deletePlayer,
         disqualify,
         eliminatedPlayers,
-        modifyRebuy
+        modifyRebuy,
+        modifyAddon
       }}
     >
       {children}

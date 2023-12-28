@@ -33,7 +33,7 @@ export function PlayerCard({
   const [isChecked, setIsChecked] = useState(addOn);
   const [rebuysCounter, setRebuysCounter] = useState(rebuys);
   const [player, setPlayer] = useState<Players>({} as Players);
-  const { players, modifyRebuy } = usePlayers();
+  const { players, modifyRebuy, modifyAddon } = usePlayers();
 
    function operation(isAdding: boolean) {
     if (isAdding) {
@@ -47,6 +47,12 @@ export function PlayerCard({
     modifyRebuy(id, rebuysCounter - 1);
   }
 
+  function changeAddOn() {
+    setIsChecked(!isChecked)
+
+    modifyAddon(id, !isChecked)
+  }
+
   useEffect(() => {
     const currentPlayer = players.find((player) => player.id === id);
 
@@ -57,7 +63,7 @@ export function PlayerCard({
     <Container variant={isPlaying}>
       <ChipImg source={isPlaying ? Chip : Elimination} />
 
-      <Title>{name}</Title>
+      <Title>{name.length > 13 ? `${name.substring(0, 13)}...` : name }</Title>
 
       {isPlaying ? (
         <Box>
@@ -66,7 +72,7 @@ export function PlayerCard({
             <CheckBox
               checkedColor={theme.COLORS.YELLOW_700}
               checked={isChecked}
-              onPress={() => setIsChecked(!isChecked)}
+              onPress={changeAddOn}
             />
           </AddOnBox>
           <Button onPress={() => operation(false)}>

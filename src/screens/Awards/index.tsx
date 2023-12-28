@@ -80,7 +80,7 @@ export function Awards() {
 
         <Wrapper variant="PODIUM">
           <PodiumItem>
-            <PodiumText>{formatter.format(firstPlace)}</PodiumText>
+            <PodiumText>{formatter.format(secondPlace)}</PodiumText>
             <Podium variant="SECOND">
               <Icon
                 type="material-icons"
@@ -92,7 +92,7 @@ export function Awards() {
           </PodiumItem>
 
           <PodiumItem>
-            <PodiumText>{formatter.format(secondPlace)}</PodiumText>
+            <PodiumText>{formatter.format(firstPlace)}</PodiumText>
             <Podium variant="FIRST">
               <Icon
                 type="material-icons"
