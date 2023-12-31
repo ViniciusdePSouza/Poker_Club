@@ -12,6 +12,7 @@ import { StatusBar } from "react-native";
 import { Routes } from "./src/routes";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PlayersProvider } from "./src/hooks/playersContext";
+import { TournamentConfigProvider } from "./src/hooks/configureTournamentContext";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -21,16 +22,18 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <PlayersProvider>
-        <ThemeProvider theme={theme}>
-          <StatusBar
-            barStyle={"light-content"}
-            backgroundColor={"transparent"}
-            translucent
-          />
-          {fontsLoaded ? <Routes /> : <Loading />}
-        </ThemeProvider>
-      </PlayersProvider>
+      <TournamentConfigProvider>
+        <PlayersProvider>
+          <ThemeProvider theme={theme}>
+            <StatusBar
+              barStyle={"light-content"}
+              backgroundColor={"transparent"}
+              translucent
+            />
+            {fontsLoaded ? <Routes /> : <Loading />}
+          </ThemeProvider>
+        </PlayersProvider>
+      </TournamentConfigProvider>
     </GestureHandlerRootView>
   );
 }

@@ -11,7 +11,7 @@ export function Input({ ...rest }: TextInputProps) {
     <>
       <Container>
         <Icon type="entypo" name="user" color={theme.COLORS.GRAY_300} />
-        <InputText {...rest} placeholderTextColor={COLORS.GRAY_300} />
+        <InputText {...rest} placeholderTextColor={COLORS.GRAY_300}  />
       </Container>
     </>
   );

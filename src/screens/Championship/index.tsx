@@ -15,7 +15,13 @@ import { Input } from "../../components/Input";
 import { PlayerCard } from "../../components/PlayerCard";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Alert, View, Text } from "react-native";
+import {
+  Alert,
+  View,
+  Text,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 import { Icon } from "@rneui/themed";
 
@@ -88,46 +94,54 @@ export function Championship() {
 
   const HeaderFlatList = () => {
     return (
-      <>
-        <Title>Championship Info</Title>
-        <InputWrapper>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field: { onChange, onBlur, value } }) => {
-              return (
-                <Input
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                  placeholder="Insira o nome do jogador"
-                  onSubmitEditing={handleSubmit(handleAddPlayer)}
-                />
-              );
-            }}
-          />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <>
+          <Title>Championship Info</Title>
+          <InputWrapper>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, onBlur, value } }) => {
+                return (
+                  <Input
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    placeholder="Insira o nome do jogador"
+                    onSubmitEditing={handleSubmit(handleAddPlayer)}
+                  />
+                );
+              }}
+            />
 
-          <AddButton onPress={handleSubmit(handleAddPlayer)}>
-            <Icon type="ant-design" name="pluscircle" size={24} />
-          </AddButton>
-        </InputWrapper>
-        <View style={{ width: '100%', flexDirection: "row", justifyContent: "space-between"}}>
-        <Title2>Players List</Title2>
-          <Title2>
-            Remaining Players: {' '}
-            <Text style={{ color: theme.COLORS.YELLOW_700 }}>
-              { players.length - eliminatedPlayers.length}
-            </Text>
-            /{players.length}
-          </Title2>
-        </View>
-      </>
+            <AddButton onPress={handleSubmit(handleAddPlayer)}>
+              <Icon type="ant-design" name="pluscircle" size={24} />
+            </AddButton>
+          </InputWrapper>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Title2>Players List</Title2>
+            <Title2>
+              Remaining Players:{" "}
+              <Text style={{ color: theme.COLORS.YELLOW_700 }}>
+                {players.length - eliminatedPlayers.length}
+              </Text>
+              /{players.length}
+            </Title2>
+          </View>
+        </>
+      </TouchableWithoutFeedback>
     );
   };
 
   const FooterFlatList = () => {
-    return <View style={{height: 28,}}></View>
-  }
+    return <View style={{ height: 28 }}></View>;
+  };
 
   return (
     <SafeAreaView>
