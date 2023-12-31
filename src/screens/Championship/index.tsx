@@ -48,6 +48,7 @@ export function Championship() {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<AddPlayerFormData>({
     resolver: yupResolver(AddPlayerSchema),
@@ -63,6 +64,8 @@ export function Championship() {
     }
 
     addNewPlayer(name);
+
+    reset()
   }
 
   function handleRemovePlayer(id: number) {
