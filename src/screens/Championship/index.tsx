@@ -1,5 +1,7 @@
 import { Players } from "../../@types/players";
 
+import { Modal, Pressable } from "react-native";
+
 import theme from "../../theme";
 
 import {
@@ -45,12 +47,7 @@ export function Championship() {
   const { players, addNewPlayer, deletePlayer, disqualify, eliminatedPlayers } =
     usePlayers();
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<AddPlayerFormData>({
+  const { control, handleSubmit, reset } = useForm<AddPlayerFormData>({
     resolver: yupResolver(AddPlayerSchema),
   });
 
@@ -65,7 +62,7 @@ export function Championship() {
 
     addNewPlayer(name);
 
-    reset()
+    reset();
   }
 
   function handleRemovePlayer(id: number) {
@@ -95,52 +92,50 @@ export function Championship() {
     ]);
   }
 
-  const HeaderFlatList = () => {
-    return (
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <>
-          <Title>Championship Info</Title>
-          <InputWrapper>
-            <Controller
-              control={control}
-              name="name"
-              render={({ field: { onChange, onBlur, value } }) => {
-                return (
-                  <Input
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    placeholder="Insira o nome do jogador"
-                    onSubmitEditing={handleSubmit(handleAddPlayer)}
-                  />
-                );
-              }}
-            />
-
-            <AddButton onPress={handleSubmit(handleAddPlayer)}>
-              <Icon type="ant-design" name="pluscircle" size={24} />
-            </AddButton>
-          </InputWrapper>
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-between",
+  const HeaderFlatList = () => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <>
+        <Title>Championship Info</Title>
+        <InputWrapper>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field: { onChange, onBlur, value } }) => {
+              return (
+                <Input
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  placeholder="Insira o nome do jogador"
+                  onSubmitEditing={handleSubmit(handleAddPlayer)}
+                />
+              );
             }}
-          >
-            <Title2>Players List</Title2>
-            <Title2>
-              Remaining Players:{" "}
-              <Text style={{ color: theme.COLORS.YELLOW_700 }}>
-                {players.length - eliminatedPlayers.length}
-              </Text>
-              /{players.length}
-            </Title2>
-          </View>
-        </>
-      </TouchableWithoutFeedback>
-    );
-  };
+          />
+
+          <AddButton onPress={handleSubmit(handleAddPlayer)}>
+            <Icon type="ant-design" name="pluscircle" size={24} />
+          </AddButton>
+        </InputWrapper>
+        <View
+          style={{
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Title2>Players List</Title2>
+          <Title2>
+            Remaining Players:{" "}
+            <Text style={{ color: theme.COLORS.YELLOW_700 }}>
+              {players.length - eliminatedPlayers.length}
+            </Text>
+            /{players.length}
+          </Title2>
+        </View>
+      </>
+    </TouchableWithoutFeedback>
+  );
 
   const FooterFlatList = () => {
     return <View style={{ height: 28 }}></View>;

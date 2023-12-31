@@ -2,19 +2,39 @@ import styled from "styled-components/native";
 import theme from "../../theme";
 
 export type PlayerCardVariantColor = boolean;
+export type TextCardVariant = 'TITLE' | 'VALUE'
+export type MarginCardVariant = 'ITEM' | 'TOTAL'
 
 interface PlayerCardProps {
   variant: PlayerCardVariantColor;
 }
 
-export const Container = styled.View<PlayerCardProps>`
+interface TextCardProps {
+  variant: TextCardVariant
+}
+
+interface MarginCardProps {
+  variant: MarginCardVariant
+}
+
+const TextCardColor = {
+  'TITLE': `${theme.COLORS.YELLOW_700}`,
+  'VALUE': `${theme.COLORS.WHITE}`
+}
+
+const MarginCard = { 
+  'ITEM': '0px',
+  'TOTAL': '24px',
+}
+
+export const Container = styled.TouchableOpacity<PlayerCardProps>`
   flex-direction: row;
   align-items: center;
   position: relative;
 
   padding: 16px;
 
-  gap:8px;
+  gap: 8px;
 
   ${(props: PlayerCardProps) =>
     props.variant
@@ -24,6 +44,24 @@ export const Container = styled.View<PlayerCardProps>`
   border-radius: 8px;
 
   margin-top: 16px;
+`;
+
+export const ModalView = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+`;
+
+export const ContentModal = styled.View`
+  max-width: 80%;
+  align-items: center;
+  justify-content: center;
+  background-color: ${theme.COLORS.GRAY_500};
+
+  padding: 12px;
+
+  border-radius: 8px;
 `;
 
 export const ChipImg = styled.Image`
@@ -86,3 +124,32 @@ export const EliminationText = styled.Text`
 
   color: ${theme.COLORS.GRAY_200};
 `;
+
+export const PlayerImg = styled.Image`
+  width: 140px;
+  height: 150px;
+  object-fit: cover;
+`;
+
+export const Card = styled.View<MarginCardProps>`
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  background-color: ${theme.COLORS.GRAY_400};
+  padding: 8px;
+  margin-left: 16px;
+
+  border-radius: 4px;
+
+  gap: 8px;
+
+  ${(props: MarginCardProps) => `margin-top: ${MarginCard[props.variant]}`};
+`;
+
+export const CardText = styled.Text<TextCardProps>`
+  ${(props: TextCardProps) => `color: ${TextCardColor[props.variant]}`};
+
+  font-family: ${theme.FONT_FAMILY.BOLD}
+`
+
