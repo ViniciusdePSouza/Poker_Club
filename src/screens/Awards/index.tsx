@@ -11,12 +11,15 @@ import { useEffect, useState } from "react";
 import { usePlayers } from "../../hooks/playersContext";
 import { Icon } from "@rneui/themed";
 import theme from "../../theme";
+import { useConfiguration } from "../../hooks/configureTournamentContext";
 
 export function Awards() {
   const formatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
+
+  const { configuration } = useConfiguration();
 
   const { players, eliminatedPlayers } = usePlayers();
   const [rebuys, setRebuys] = useState(0);
@@ -48,9 +51,15 @@ export function Awards() {
   }, [players]);
 
   useEffect(() => {
-    const rebuysMoney = 40 * rebuys;
-    const buyInMoney = players.length * 40;
-    const addOnsMoney = calculateAddOns();
+    const rebuysMoney = configuration.rebuy
+      ? configuration.rebuy * rebuys
+      : 40 * rebuys;
+    const buyInMoney = configuration.rebuy
+      ? players.length * configuration.buyIn
+      : 40 * players.length;
+    const addOnsMoney = configuration.rebuy
+      ? calculateAddOns() * configuration.addOn
+      : 40 * calculateAddOns();
 
     const totalMoneyAmount = rebuysMoney + buyInMoney + addOnsMoney;
     const cashier = totalMoneyAmount * 0.1;

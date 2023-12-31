@@ -2,7 +2,6 @@ import {
   ReactNode,
   createContext,
   useContext,
-  useEffect,
   useState,
 } from "react";
 import { TournamentConfig } from "../@types/tournamentConfig";
