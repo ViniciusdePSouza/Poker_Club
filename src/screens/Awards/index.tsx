@@ -1,4 +1,4 @@
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView } from "react-native";
 import {
   Container,
   Podium,
@@ -21,7 +21,7 @@ export function Awards() {
 
   const { configuration } = useConfiguration();
 
-  const { players, eliminatedPlayers } = usePlayers();
+  const { players } = usePlayers();
   const [rebuys, setRebuys] = useState(0);
   const [award, setAward] = useState(0);
   const [firstPlace, setFirstPlace] = useState(0);
@@ -80,7 +80,7 @@ export function Awards() {
     }
 
     setAward(award);
-  }, [rebuys, players]);
+  }, [rebuys, players, configuration]);
 
   return (
     <Container>
