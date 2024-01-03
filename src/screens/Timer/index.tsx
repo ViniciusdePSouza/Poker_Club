@@ -1,8 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Text } from "react-native";
-import { Button } from "../../components/Button";
 import theme from "../../theme";
-import { Container } from "./styles";
+import { Icon } from "@rneui/themed";
+import { Audio } from 'expo-av';
+import {
+  BoxLvlWrapper,
+  ButtonControlView,
+  Container,
+  LvlText,
+  LvlsBox,
+  TimerButton,
+  Title,
+} from "./styles";
 
 export function Timer() {
   const [seconds, setSeconds] = useState(3);
@@ -14,15 +23,24 @@ export function Timer() {
   ];
   const [blindCounter, setBlindCounter] = useState(0);
 
+  async function playSound(){
+    const file = require('../../assets/alert.mp3')
+    const {sound} = await Audio.Sound.createAsync(file, {shouldPlay: true})
+
+    await sound.setPositionAsync(0)
+    await sound.playAsync()
+  }
+
   useEffect(() => {
-    let timeout: any;
+    let timeout: NodeJS.Timeout | undefined;
 
     if (isRunning) {
       timeout = setTimeout(() => {
         if (seconds === 0) {
           if (minutes === 0) {
-            resetCountdown();
+            playSound()
             setBlindCounter((state) => state + 1);
+            resetCountdown();
             return;
           }
 
@@ -39,38 +57,58 @@ export function Timer() {
     };
   }, [isRunning, minutes, seconds]);
 
-  const startCountdown = () => {
+  function startCountdown() {
     setIsRunning(true);
-  };
+  }
 
-  const stopCountdown = () => {
+  function stopCountdown() {
     setIsRunning(false);
-  };
+  }
 
-  const resetCountdown = () => {
-    if(blindCounter 
-      >= 5) {
+  function resetCountdown() {
+    if (blindCounter >= 5) {
       setMinutes(12);
       setSeconds(0);
-      return
+      return;
     }
 
     setMinutes(15);
     setSeconds(0);
-  };
+  }
 
   return (
     <Container>
-      <Text style={{ color: theme.COLORS.WHITE, fontSize: 42 }}>{`blind: ${
+      <Title>Timer</Title>
+      <BoxLvlWrapper>
+        <LvlsBox>
+          <LvlText>Previous</LvlText>
+          <LvlText>200/400</LvlText>
+        </LvlsBox>
+        <LvlsBox>
+          <LvlText>Next</LvlText>
+          <LvlText>200/400</LvlText>
+        </LvlsBox>
+      </BoxLvlWrapper>
+
+      <LvlText>{`${
         structure[blindCounter] / 2
-      } / ${structure[blindCounter]}`}</Text>
+      } / ${structure[blindCounter]}`}</LvlText>
 
       <Text style={{ color: theme.COLORS.WHITE, fontSize: 42 }}>{`${String(
         minutes
       ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`}</Text>
-      <Button title={"Start"} onPress={startCountdown} />
-      <Button title={"Stop"} onPress={stopCountdown} />
-      <Button title={"Reset"} onPress={resetCountdown} />
+
+      <ButtonControlView>
+        <TimerButton onPress={startCountdown}>
+         <Icon name={"controller-play"} type='entypo'/>
+        </TimerButton>
+        <TimerButton onPress={stopCountdown}>
+        <Icon name={"pause"} type='foundation'/>
+        </TimerButton>
+        <TimerButton onPress={resetCountdown}>
+        <Icon name={"controller-stop"} type='entypo'/>
+        </TimerButton>
+      </ButtonControlView>
     </Container>
   );
 }

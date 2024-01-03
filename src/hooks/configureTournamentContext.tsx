@@ -21,7 +21,7 @@ export const TournamentConfigContext = createContext(
 
 function TournamentConfigProvider({ children }: TournamentConfigProviderProps) {
   const [configuration, setConfiguration] = useState<TournamentConfig>(
-    {} as TournamentConfig
+    {addOn: 0, buyIn: 0, rebuy: 0} as TournamentConfig
   );
 
   function configureTournament(data: TournamentConfig) {

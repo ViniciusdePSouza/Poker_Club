@@ -7,8 +7,8 @@ export function Routes() {
   themeDefault.colors.background = theme.COLORS.GRAY_400;
 
   return (
-      <NavigationContainer theme={themeDefault}>
-        <AppRoutes />
-      </NavigationContainer>
+    <NavigationContainer theme={themeDefault}>
+      <AppRoutes />
+    </NavigationContainer>
   );
 }
