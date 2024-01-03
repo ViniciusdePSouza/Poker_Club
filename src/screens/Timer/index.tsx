@@ -90,11 +90,11 @@ export function Timer() {
         </LvlsBox>
       </BoxLvlWrapper>
 
-      <LvlText>{`${
+      <Text style={{ color: theme.COLORS.WHITE, fontSize: 42 }}>{`${
         structure[blindCounter] / 2
-      } / ${structure[blindCounter]}`}</LvlText>
+      } / ${structure[blindCounter]}`}</Text>
 
-      <Text style={{ color: theme.COLORS.WHITE, fontSize: 42 }}>{`${String(
+      <Text style={{ color: theme.COLORS.WHITE, fontSize: 104 }}>{`${String(
         minutes
       ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`}</Text>
 
