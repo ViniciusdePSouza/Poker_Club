@@ -18,8 +18,8 @@ export function Timer() {
   const [minutes, setMinutes] = useState(15);
   const [isRunning, setIsRunning] = useState(false);
   const structure = [
-    50, 100, 150, 200, 300, 400, 600, 800, 1000, 1200, 1600, 2000, 2400, 2800, 3200, 4000, 5000,
-    6000, 8000, 10000, 15000, 20000,
+    50, 100, 150, 200, 300, 400, 600, 800, 1000, 1200, 1600, 2000, 2400, 2800,
+    3200, 4000, 5000, 6000, 8000, 10000, 15000, 20000,
   ];
   const [blindCounter, setBlindCounter] = useState(0);
 
@@ -29,6 +29,12 @@ export function Timer() {
 
     await sound.setPositionAsync(0);
     await sound.playAsync();
+  }
+
+  function changeBlind(operation: boolean) {
+    if(operation) return setBlindCounter((state) => ++state)
+
+    setBlindCounter((state) => --state)
   }
 
   useEffect(() => {
@@ -120,6 +126,15 @@ export function Timer() {
           </TimerButton>
           <TimerButton onPress={resetCountdown}>
             <Icon name={"controller-stop"} type="entypo" />
+          </TimerButton>
+        </ButtonControlView>
+
+        <ButtonControlView>
+          <TimerButton  onPress={() => changeBlind(false)}>
+            <Icon name={"previous"} type="foundation" />
+          </TimerButton>
+          <TimerButton onPress={() => changeBlind(true)}>
+            <Icon name={"next"} type="foundation" />
           </TimerButton>
         </ButtonControlView>
       </Container>
