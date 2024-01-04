@@ -25,12 +25,7 @@ const ConfigureTournamentSchema = yup.object({
 export function Home() {
   const { configureTournament } = useConfiguration();
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ConfigureTournamentData>({
+  const { control, handleSubmit, reset } = useForm<ConfigureTournamentData>({
     resolver: yupResolver(ConfigureTournamentSchema),
   });
 
@@ -41,7 +36,7 @@ export function Home() {
   }: ConfigureTournamentData) {
     if (!addOn || !buyIn || !rebuy) {
       return Alert.alert(
-        "All the fields is required so we can configure your tournament"
+        "Informe todos os valores para configurarmos seu torneio"
       );
     }
 
@@ -52,8 +47,8 @@ export function Home() {
     };
 
     Alert.alert(
-      "Tournament Configuiration",
-      `Tournament succefully configured, here it is your tournament values: 
+      "Configuração de Torneio",
+      `Torneio configurado com sucesso, aqui estão os valores que você selecionou: 
 
     Buy-In: ${configData.buyIn}
 
@@ -61,19 +56,20 @@ export function Home() {
 
     Rebuy:${configData.rebuy}
 
-    Are you sure you want to proceed?
+    Tem certeza que deseja prosseguir ? 
     `,
       [
         {
-          text: "Yes",
+          text: "Sim",
           onPress: () => {
             configureTournament(configData);
             Keyboard.dismiss();
             reset();
+            Alert.alert('Torneio configurado! ');
           },
         },
         {
-          text: "No",
+          text: "Não",
           style: "cancel",
           onPress: () => {
             Keyboard.dismiss();

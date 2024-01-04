@@ -44,7 +44,7 @@ export const LvlsBox = styled.View`
 `;
 
 export const LvlText = styled.Text`
-  font-size: ${theme.FONT_SIZE.XL}px;
+  font-size: ${theme.FONT_SIZE.LG}px;
   font-family: ${theme.FONT_FAMILY.BOLD};
   color: ${theme.COLORS.WHITE};
   text-transform: uppercase;

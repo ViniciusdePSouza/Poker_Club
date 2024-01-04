@@ -8,7 +8,7 @@ import {
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
 import { Loading } from "./src/components/Loading";
-import { StatusBar } from "react-native";
+import { SafeAreaView, StatusBar } from "react-native";
 import { Routes } from "./src/routes";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PlayersProvider } from "./src/hooks/playersContext";

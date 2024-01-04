@@ -1,6 +1,8 @@
 import styled from "styled-components/native";
 import theme from "../../theme";
 
+import { Platform } from 'react-native';
+
 export const Container = styled.View`
   flex: 1;
   align-items: center;
@@ -10,6 +12,7 @@ export const Container = styled.View`
   background-color: ${theme.COLORS.GRAY_400};
 
   padding: 50px;
+  padding-bottom: ${Platform.OS === 'android' ? 10 : 0}px;
 `;
 
 export const TextSignIn = styled.Text`

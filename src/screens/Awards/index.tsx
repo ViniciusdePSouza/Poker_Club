@@ -62,6 +62,8 @@ export function Awards() {
       : 40 * calculateAddOns();
 
     const totalMoneyAmount = rebuysMoney + buyInMoney + addOnsMoney;
+    setAward(totalMoneyAmount)
+
     const cashier = totalMoneyAmount * 0.1;
 
     setCashier(cashier);
@@ -78,14 +80,12 @@ export function Awards() {
       setSecondPlace(awardMoneyAmount * 0.3);
       setThirdPlace(awardMoneyAmount * 0.2);
     }
-
-    setAward(award);
-  }, [rebuys, players, configuration]);
+  }, [rebuys, players, configuration, award]);
 
   return (
     <Container>
       <SafeAreaView>
-        <Title>Tournament Award</Title>
+        <Title>Premiação</Title>
 
         <Wrapper variant="PODIUM">
           <PodiumItem>
@@ -134,7 +134,7 @@ export function Awards() {
           )}
         </Wrapper>
 
-        <Title>Cashier</Title>
+        <Title>Caixinha</Title>
 
         <Wrapper variant="CASHIER">
           <PodiumItem>
@@ -147,6 +147,8 @@ export function Awards() {
           </PodiumItem>
           <PodiumText>{formatter.format(cashier)}</PodiumText>
         </Wrapper>
+
+        <Title>Total: {formatter.format(award)}</Title>
       </SafeAreaView>
     </Container>
   );

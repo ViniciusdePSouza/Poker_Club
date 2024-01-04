@@ -55,7 +55,7 @@ export function Championship() {
     const doesPlayerExists = players.find((player) => player.name === name);
 
     if (doesPlayerExists) {
-      Alert.alert("This player is already registered in the tournament");
+      Alert.alert("Esse jogador já foi cadastrado no torneio");
 
       return;
     }
@@ -67,11 +67,11 @@ export function Championship() {
 
   function handleRemovePlayer(id: number) {
     Alert.alert(
-      "Remove Player",
-      "Are you sure you want to remove this player?",
+      "Remover jogador",
+      "Tem certeza que deseja remover o jogador do torneio?",
       [
-        { text: "Yes", onPress: () => deletePlayer(id) },
-        { text: "No", style: "cancel" },
+        { text: "Sim", onPress: () => deletePlayer(id) },
+        { text: "Não", style: "cancel" },
       ]
     );
   }
@@ -80,22 +80,22 @@ export function Championship() {
     const currentPlayer = players.find((player) => player.id === id);
 
     const titleButton = currentPlayer?.isPlaying
-      ? "Disqualify Player"
-      : "Rejoin Player";
+      ? "Eliminar Jogador"
+      : "Voltar Jogador ";
     const textButton = currentPlayer?.isPlaying
-      ? "Are you sure you want to disqualify this player?"
-      : "Are you sure you want to rejoin this player?";
+      ? "Tem certeza que deseja eliminar esse jogador?"
+      : "Tem certeza que deseja voltar com esse jogador?";
 
     Alert.alert(titleButton, textButton, [
-      { text: "Yes", onPress: () => disqualify(id) },
-      { text: "No", style: "cancel" },
+      { text: "Sim", onPress: () => disqualify(id) },
+      { text: "Não", style: "cancel" },
     ]);
   }
 
   const HeaderFlatList = () => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <>
-        <Title>Championship Info</Title>
+        <Title>Participantes do Torneio</Title>
         <InputWrapper>
           <Controller
             control={control}
@@ -124,9 +124,9 @@ export function Championship() {
             justifyContent: "space-between",
           }}
         >
-          <Title2>Players List</Title2>
+          <Title2>Lista de Jogadores</Title2>
           <Title2>
-            Remaining Players:{" "}
+            Restantes:{" "}
             <Text style={{ color: theme.COLORS.YELLOW_700 }}>
               {players.length - eliminatedPlayers.length}
             </Text>

@@ -18,44 +18,7 @@ interface PlayersProviderProps {
 export const PlayersContext = createContext({} as PlayersContextType);
 
 function PlayersProvider({ children }: PlayersProviderProps) {
-  const [players, setPlayers] = useState<Players[]>([
-    {
-      id: 1,
-      name: "Vini",
-      addOn: true,
-      rebuys: 0,
-      isPlaying: true,
-      total: 40,
-      position: null,
-    },
-    {
-      id: 2,
-      name: "Junim",
-      addOn: true,
-      rebuys: 0,
-      isPlaying: true,
-      total: 40,
-      position: null,
-    },
-    {
-      id: 3,
-      name: "Ian",
-      addOn: true,
-      rebuys: 0,
-      isPlaying: true,
-      total: 40,
-      position: null,
-    },
-    {
-      id: 4,
-      name: "Luan",
-      addOn: true,
-      rebuys: 0,
-      isPlaying: true,
-      total: 40,
-      position: null,
-    },
-  ]);
+  const [players, setPlayers] = useState<Players[]>([]);
 
   const [eliminatedPlayers, setEliminatedPlayers] = useState<Players[]>([]);
 

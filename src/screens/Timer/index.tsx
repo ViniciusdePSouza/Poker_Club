@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Text } from "react-native";
+import { ScrollView, Text } from "react-native";
 import theme from "../../theme";
 import { Icon } from "@rneui/themed";
-import { Audio } from 'expo-av';
+import { Audio } from "expo-av";
 import {
   BoxLvlWrapper,
   ButtonControlView,
@@ -14,21 +14,21 @@ import {
 } from "./styles";
 
 export function Timer() {
-  const [seconds, setSeconds] = useState(3);
-  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(15);
   const [isRunning, setIsRunning] = useState(false);
   const structure = [
-    50, 100, 150, 200, 300, 400, 600, 800, 1000, 1200, 1600, 2000, 3000, 4000,
+    50, 100, 150, 200, 300, 400, 600, 800, 1000, 1200, 1600, 2000, 2400, 2800, 3200, 4000, 5000,
     6000, 8000, 10000, 15000, 20000,
   ];
   const [blindCounter, setBlindCounter] = useState(0);
 
-  async function playSound(){
-    const file = require('../../assets/alert.mp3')
-    const {sound} = await Audio.Sound.createAsync(file, {shouldPlay: true})
+  async function playSound() {
+    const file = require("../../assets/alert.mp3");
+    const { sound } = await Audio.Sound.createAsync(file, { shouldPlay: true });
 
-    await sound.setPositionAsync(0)
-    await sound.playAsync()
+    await sound.setPositionAsync(0);
+    await sound.playAsync();
   }
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export function Timer() {
       timeout = setTimeout(() => {
         if (seconds === 0) {
           if (minutes === 0) {
-            playSound()
+            playSound();
             setBlindCounter((state) => state + 1);
             resetCountdown();
             return;
@@ -77,38 +77,52 @@ export function Timer() {
   }
 
   return (
-    <Container>
-      <Title>Timer</Title>
-      <BoxLvlWrapper>
-        <LvlsBox>
-          <LvlText>Previous</LvlText>
-          <LvlText>200/400</LvlText>
-        </LvlsBox>
-        <LvlsBox>
-          <LvlText>Next</LvlText>
-          <LvlText>200/400</LvlText>
-        </LvlsBox>
-      </BoxLvlWrapper>
+    <ScrollView>
+      <Container>
+        <Title>Cronômetro</Title>
+        <BoxLvlWrapper>
+          <LvlsBox>
+            <LvlText>Anterior</LvlText>
+            <LvlText>
+              {blindCounter > 0
+                ? `${structure[blindCounter - 1] / 2} / ${
+                    structure[blindCounter - 1]
+                  }`
+                : "---/---"}{" "}
+            </LvlText>
+          </LvlsBox>
+          <LvlsBox>
+            <LvlText>Próximo</LvlText>
+            <LvlText>
+              {blindCounter + 1
+                ? `${structure[blindCounter + 1] / 2} / ${
+                    structure[blindCounter + 1]
+                  }`
+                : "---/---"}
+            </LvlText>
+          </LvlsBox>
+        </BoxLvlWrapper>
 
-      <Text style={{ color: theme.COLORS.WHITE, fontSize: 42 }}>{`${
-        structure[blindCounter] / 2
-      } / ${structure[blindCounter]}`}</Text>
+        <Text style={{ color: theme.COLORS.WHITE, fontSize: 42 }}>{`${
+          structure[blindCounter] / 2
+        } / ${structure[blindCounter]}`}</Text>
 
-      <Text style={{ color: theme.COLORS.WHITE, fontSize: 104 }}>{`${String(
-        minutes
-      ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`}</Text>
+        <Text style={{ color: theme.COLORS.WHITE, fontSize: 104 }}>{`${String(
+          minutes
+        ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`}</Text>
 
-      <ButtonControlView>
-        <TimerButton onPress={startCountdown}>
-         <Icon name={"controller-play"} type='entypo'/>
-        </TimerButton>
-        <TimerButton onPress={stopCountdown}>
-        <Icon name={"pause"} type='foundation'/>
-        </TimerButton>
-        <TimerButton onPress={resetCountdown}>
-        <Icon name={"controller-stop"} type='entypo'/>
-        </TimerButton>
-      </ButtonControlView>
-    </Container>
+        <ButtonControlView>
+          <TimerButton onPress={startCountdown}>
+            <Icon name={"controller-play"} type="entypo" />
+          </TimerButton>
+          <TimerButton onPress={stopCountdown}>
+            <Icon name={"pause"} type="foundation" />
+          </TimerButton>
+          <TimerButton onPress={resetCountdown}>
+            <Icon name={"controller-stop"} type="entypo" />
+          </TimerButton>
+        </ButtonControlView>
+      </Container>
+    </ScrollView>
   );
 }
