@@ -32,11 +32,17 @@ export function Timer() {
   }
 
   function changeBlind(operation: boolean) {
-    if(operation) return setBlindCounter((state) => ++state)
+    if(operation)  {
+      setBlindCounter((state) => ++state)
+      if(blindCounter+1 > 5) setMinutes(12)
+      return 
+    }
 
     setBlindCounter((state) => --state)
+    if(blindCounter <= 6) {
+      setMinutes(15)
+    }
   }
-
   useEffect(() => {
     let timeout: NodeJS.Timeout | undefined;
 
