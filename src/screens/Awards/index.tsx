@@ -71,10 +71,10 @@ export function Awards() {
     const awardMoneyAmount = totalMoneyAmount - cashier;
 
     if (players.length > 10) {
-      setFirstPlace(awardMoneyAmount * 0.5);
-      setSecondPlace(awardMoneyAmount * 0.2);
-      setThirdPlace(awardMoneyAmount * 0.1);
-      setForthPlace(awardMoneyAmount * 0.05);
+      setFirstPlace(awardMoneyAmount * 0.4);
+      setSecondPlace(awardMoneyAmount * 0.3);
+      setThirdPlace(awardMoneyAmount * 0.2);
+      setForthPlace(awardMoneyAmount * 0.1);
     } else {
       setFirstPlace(awardMoneyAmount * 0.5);
       setSecondPlace(awardMoneyAmount * 0.3);

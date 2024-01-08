@@ -2,7 +2,7 @@
   "expo": {
     "name": "PokerClub",
     "slug": "PokerClub",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -15,14 +15,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vinisouza.mp3.PokerClub"
     },
     "android": {
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
-      
+      },
+      "package": "com.vinisouza.mp3.PokerClub"
     },
     "web": {
       "favicon": "./assets/favicon.png"

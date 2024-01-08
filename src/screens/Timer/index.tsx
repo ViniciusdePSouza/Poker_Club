@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { ScrollView, Text } from "react-native";
 import theme from "../../theme";
 import { Icon } from "@rneui/themed";
