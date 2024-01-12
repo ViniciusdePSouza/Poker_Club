@@ -2,6 +2,7 @@ import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { Home } from "../screens/Home";
 import { Championship } from "../screens/Championship";
 import { Timer } from "../screens/Timer";
@@ -10,6 +11,7 @@ import { Icon } from "@rneui/themed";
 import theme from "../theme";
 import { Platform } from "react-native";
 import { Awards } from "../screens/Awards";
+import { TournamentConfig } from "../screens/TournmentConfig";
 
 type AppRoutesProps = {
   Home: undefined;
@@ -20,11 +22,12 @@ type AppRoutesProps = {
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutesProps>;
 
-const { Navigator, Screen } = createBottomTabNavigator<AppRoutesProps>();
+const Tab = createBottomTabNavigator<AppRoutesProps>();
+const Stack = createStackNavigator();
 
-export function AppRoutes() {
+const MainTabs = () => {
   return (
-    <Navigator
+    <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -36,10 +39,10 @@ export function AppRoutes() {
           height: Platform.OS === "android" ? 62 : 84,
           paddingTop: Platform.OS === "android" ? 8 : 16,
         },
-        tabBarHideOnKeyboard: true
+        tabBarHideOnKeyboard: true,
       }}
     >
-      <Screen
+      <Tab.Screen
         name="Home"
         component={Home}
         options={{
@@ -48,7 +51,7 @@ export function AppRoutes() {
           },
         }}
       />
-      <Screen
+      <Tab.Screen
         name="Championship"
         component={Championship}
         options={{
@@ -57,17 +60,24 @@ export function AppRoutes() {
           },
         }}
       />
-      <Screen
+      <Tab.Screen
         name="Awards"
         component={Awards}
         options={{
           tabBarIcon: ({ color }) => {
-            return <Icon name="attach-money" type="material-icons" size={36} color={color} />;
+            return (
+              <Icon
+                name="attach-money"
+                type="material-icons"
+                size={36}
+                color={color}
+              />
+            );
           },
         }}
       />
 
-      <Screen
+      <Tab.Screen
         name="Timer"
         component={Timer}
         options={{
@@ -76,6 +86,15 @@ export function AppRoutes() {
           },
         }}
       />
-    </Navigator>
+    </Tab.Navigator>
+  );
+};
+
+export function AppRoutes() {
+  return (
+    <Stack.Navigator initialRouteName="Config" screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Config" component={TournamentConfig} />
+      <Stack.Screen name="HomeStack" component={MainTabs} />
+    </Stack.Navigator>
   );
 }

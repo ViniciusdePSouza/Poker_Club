@@ -1,4 +1,8 @@
 import { SafeAreaView } from "react-native";
+import { useEffect, useState } from "react";
+
+import { Icon } from "@rneui/themed";
+
 import {
   Container,
   Podium,
@@ -7,23 +11,23 @@ import {
   Title,
   Wrapper,
 } from "./style";
-import { useEffect, useState } from "react";
-import { usePlayers } from "../../hooks/playersContext";
-import { Icon } from "@rneui/themed";
 import theme from "../../theme";
+
+import { usePlayers } from "../../hooks/playersContext";
 import { useConfiguration } from "../../hooks/configureTournamentContext";
-import { AwardCard } from "../../components/AwardCard";
+
 import { Calculation } from "../../utils/calculations";
 
+import { AwardCard } from "../../components/AwardCard";
+
 export function Awards() {
+  const { configuration } = useConfiguration();
+  const { players } = usePlayers()
+  
   const formatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
-  
-  const { configuration } = useConfiguration();
-  
-  const { players } = usePlayers()
   const calc = new Calculation(players, configuration);
 
   const [award, setAward] = useState(0);
@@ -46,11 +50,9 @@ export function Awards() {
     setTotalMoney(totalMoneyAmount);
 
     const cashier = players.length * 15;
-
     setCashier(cashier);
 
     const awardMoneyAmount = totalMoneyAmount - cashier;
-    
     setAward(awardMoneyAmount);
 
     if (players.length > 10) {

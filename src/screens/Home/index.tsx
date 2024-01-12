@@ -7,8 +7,9 @@ import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../../components/Button";
-import { Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Alert, Animated, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useConfiguration } from "../../hooks/configureTournamentContext";
+import { useNavigation } from "@react-navigation/native";
 
 type ConfigureTournamentData = {
   buyIn?: string;
@@ -22,8 +23,12 @@ const ConfigureTournamentSchema = yup.object({
   addOn: yup.string(),
 });
 
+
+
 export function Home() {
   const { configureTournament } = useConfiguration();
+
+  const navigation = useNavigation();
 
   const { control, handleSubmit, reset } = useForm<ConfigureTournamentData>({
     resolver: yupResolver(ConfigureTournamentSchema),
@@ -34,6 +39,11 @@ export function Home() {
     buyIn,
     rebuy,
   }: ConfigureTournamentData) {
+ 
+    navigation.navigate("Config" as never);
+
+    return
+
     if (!addOn || !buyIn || !rebuy) {
       return Alert.alert(
         "Informe todos os valores para configurarmos seu torneio"
