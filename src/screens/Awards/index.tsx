@@ -24,7 +24,7 @@ export function Awards() {
   const { configuration } = useConfiguration();
   
   const { players } = usePlayers()
-  const calc = new Calculation(players);
+  const calc = new Calculation(players, configuration);
 
   const [award, setAward] = useState(0);
   const [totalMoney, setTotalMoney] = useState(0);
@@ -38,17 +38,11 @@ export function Awards() {
     const rebuys = calc.calculateRebuys();
     const addOns = calc.calculateAddOns();
 
-    const rebuysMoney = configuration.rebuy
-      ? configuration.rebuy * rebuys
-      : 40 * rebuys;
-    const buyInMoney = configuration.buyIn
-      ? players.length * configuration.buyIn
-      : 40 * players.length;
-    const addOnsMoney = configuration.addOn
-      ? addOns * configuration.addOn
-      : 40 * addOns;
+    const rebuysMoney = calc.calculateItemMoney("REBUY", rebuys);
+    const buyInMoney = calc.calculateItemMoney("BUYIN", players.length);
+    const addOnsMoney = calc.calculateItemMoney("ADDON", addOns);
 
-    const totalMoneyAmount = rebuysMoney + buyInMoney + addOnsMoney;
+    const totalMoneyAmount = rebuysMoney! + buyInMoney! + addOnsMoney!;
     setTotalMoney(totalMoneyAmount);
 
     const cashier = players.length * 15;
@@ -56,6 +50,7 @@ export function Awards() {
     setCashier(cashier);
 
     const awardMoneyAmount = totalMoneyAmount - cashier;
+    
     setAward(awardMoneyAmount);
 
     if (players.length > 10) {
