@@ -12,63 +12,51 @@ import { usePlayers } from "../../hooks/playersContext";
 import { Icon } from "@rneui/themed";
 import theme from "../../theme";
 import { useConfiguration } from "../../hooks/configureTournamentContext";
+import { AwardCard } from "../../components/AwardCard";
+import { Calculation } from "../../utils/calculations";
 
 export function Awards() {
   const formatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
-
+  
   const { configuration } = useConfiguration();
+  
+  const { players } = usePlayers()
+  const calc = new Calculation(players);
 
-  const { players } = usePlayers();
-  const [rebuys, setRebuys] = useState(0);
   const [award, setAward] = useState(0);
+  const [totalMoney, setTotalMoney] = useState(0);
   const [firstPlace, setFirstPlace] = useState(0);
   const [secondPlace, setSecondPlace] = useState(0);
   const [thirdPlace, setThirdPlace] = useState(0);
   const [forthPlace, setForthPlace] = useState(0);
   const [cashier, setCashier] = useState(0);
 
-  function calculateRebuys() {
-    const totalRebuys = players.reduce((accumulator, currentPlayer) => {
-      return accumulator + currentPlayer.rebuys;
-    }, 0);
-
-    return totalRebuys;
-  }
-
-  function calculateAddOns() {
-    const totalAddOnsArray = players.filter((player) => player.addOn);
-
-    return totalAddOnsArray.length;
-  }
-
   useEffect(() => {
-    const rebuysCalculated = calculateRebuys();
+    const rebuys = calc.calculateRebuys();
+    const addOns = calc.calculateAddOns();
 
-    setRebuys(rebuysCalculated);
-  }, [players]);
-
-  useEffect(() => {
     const rebuysMoney = configuration.rebuy
       ? configuration.rebuy * rebuys
       : 40 * rebuys;
-    const buyInMoney = configuration.rebuy
+    const buyInMoney = configuration.buyIn
       ? players.length * configuration.buyIn
       : 40 * players.length;
-    const addOnsMoney = configuration.rebuy
-      ? calculateAddOns() * configuration.addOn
-      : 40 * calculateAddOns();
+    const addOnsMoney = configuration.addOn
+      ? addOns * configuration.addOn
+      : 40 * addOns;
 
     const totalMoneyAmount = rebuysMoney + buyInMoney + addOnsMoney;
-    setAward(totalMoneyAmount)
+    setTotalMoney(totalMoneyAmount);
 
-    const cashier = totalMoneyAmount * 0.1;
+    const cashier = players.length * 15;
 
     setCashier(cashier);
 
     const awardMoneyAmount = totalMoneyAmount - cashier;
+    setAward(awardMoneyAmount);
 
     if (players.length > 10) {
       setFirstPlace(awardMoneyAmount * 0.4);
@@ -80,7 +68,7 @@ export function Awards() {
       setSecondPlace(awardMoneyAmount * 0.3);
       setThirdPlace(awardMoneyAmount * 0.2);
     }
-  }, [rebuys, players, configuration, award]);
+  }, [players, configuration, award]);
 
   return (
     <Container>
@@ -134,21 +122,31 @@ export function Awards() {
           )}
         </Wrapper>
 
-        <Title>Caixinha</Title>
+        <Title>Informações do dinheiro</Title>
 
-        <Wrapper variant="CASHIER">
-          <PodiumItem>
-            <Icon
-              name="inbox"
-              type="ant-design"
-              size={48}
-              color={theme.COLORS.BRONZE_700}
-            />
-          </PodiumItem>
-          <PodiumText>{formatter.format(cashier)}</PodiumText>
-        </Wrapper>
+        <AwardCard
+          title={"Total arrecadado"}
+          iconName={"money"}
+          iconType="font-awesome"
+          content={formatter.format(totalMoney).toString()}
+          color={theme.COLORS.GREEN_700}
+        />
 
-        <Title>Total: {formatter.format(award)}</Title>
+        <AwardCard
+          title={"Caixinha"}
+          iconName={"inbox"}
+          iconType="ant-design"
+          content={formatter.format(cashier).toString()}
+          color={theme.COLORS.GRAY_700}
+        />
+
+        <AwardCard
+          title={"Prêmio Total"}
+          iconName={"trophy"}
+          iconType="entypo"
+          content={formatter.format(award).toString()}
+          color={theme.COLORS.YELLOW_700}
+        />
       </SafeAreaView>
     </Container>
   );
