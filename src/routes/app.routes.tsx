@@ -22,6 +22,7 @@ type AppRoutesProps = {
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutesProps>;
 
+
 const Tab = createBottomTabNavigator<AppRoutesProps>();
 const Stack = createStackNavigator();
 
