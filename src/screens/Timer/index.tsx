@@ -67,7 +67,7 @@ export function Timer() {
   }
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout | undefined;
+    let timeout: NodeJS.Timeout;
 
     if (isRunning) {
       timeout = setTimeout(() => {
