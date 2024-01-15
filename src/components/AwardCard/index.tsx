@@ -1,13 +1,13 @@
 import { Icon } from "@rneui/themed";
 import { Container, TextContent } from "./styles";
-import theme from "../../theme";
 
-interface AwardCardProps {
+export interface AwardCardProps {
   title: string;
   iconName: string;
   iconType?: string;
   content: string;
   color: string;
+  isPlayerShown?: boolean;
 }
 
 export function AwardCard({
@@ -15,17 +15,18 @@ export function AwardCard({
   iconName,
   iconType = "",
   content,
-  color
+  color,
+  isPlayerShown = false,
 }: AwardCardProps) {
   return (
-    <Container>
+    <Container isPlayerShown={isPlayerShown}>
       <Icon
         name={iconName}
         type={iconType}
         size={40}
         color={color}
       />
-      <TextContent>
+      <TextContent isPlayerShown={isPlayerShown}>
         {title}: {content}
       </TextContent>
     </Container>

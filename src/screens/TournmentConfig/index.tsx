@@ -1,7 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "../../components/Button";
-import { ConfigWrapper, Container, Header, LogoImg, Title } from "./styles";
-import { Alert, Keyboard, SafeAreaView, Text, TouchableWithoutFeedback, View } from "react-native";
+import {
+  ConfigWrapper,
+  Container,
+  Header,
+  Label,
+  LogoImg,
+  Title,
+} from "./styles";
+import {
+  Alert,
+  Keyboard,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
@@ -9,17 +22,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useConfiguration } from "../../hooks/configureTournamentContext";
 import { ConfigInput } from "../../components/ConfigInput";
 import Logo from "../../assets/299.png";
+import { useState } from "react";
 
 type ConfigureTournamentData = {
   buyIn?: string;
   rebuy?: string;
   addOn?: string;
+  awardedNumber?: string;
 };
 
 const ConfigureTournamentSchema = yup.object({
   buyIn: yup.string(),
   rebuy: yup.string(),
   addOn: yup.string(),
+  awardedNumber: yup.string(),
 });
 
 export function TournamentConfig() {
@@ -28,17 +44,68 @@ export function TournamentConfig() {
     resolver: yupResolver(ConfigureTournamentSchema),
   });
 
+  const [awardedNumberValue, setAwardedNumberValue] = useState<
+    string | undefined
+  >(undefined);
+
+  const [percentage1, setPercentage1] = useState(0);
+  const [percentage2, setPercentage2] = useState(0);
+  const [percentage3, setPercentage3] = useState(0);
+  const [percentage4, setPercentage4] = useState(0);
+  const [percentage5, setPercentage5] = useState(0);
+  const [percentage6, setPercentage6] = useState(0);
+
+  const setPercentageArray = [
+    setPercentage1,
+    setPercentage2,
+    setPercentage3,
+    setPercentage4,
+    setPercentage5,
+    setPercentage6,
+  ];
+
+  const percentageArray = [
+    percentage1,
+    percentage2,
+    percentage3,
+    percentage4,
+    percentage5,
+    percentage6,
+  ];
+
   const navigation = useNavigation();
 
   function handleNavigation() {
     navigation.navigate("HomeStack" as never);
   }
 
+  function callSetPercentageArray(index: number, value: string) {
+    setPercentageArray[index](Number(value));
+  }
+
+  function calculatePercentage(number: number) {
+    return number / 100;
+  }
+
   function handleConfigureTournament({
     addOn,
     buyIn,
     rebuy,
+    awardedNumber,
   }: ConfigureTournamentData) {
+    if (awardedNumber == undefined) {
+      return Alert.alert("Informe o número de jogadores premiados");
+    }
+
+    let totalPercentage = 0;
+    for (let i = 0; i < Number(awardedNumber); i++) {
+      totalPercentage = totalPercentage + percentageArray[i];
+    }
+
+    if (Number(totalPercentage) != 100) {
+      return Alert.alert("A soma da porcentagem da premiação deve ser de 100%");
+    }
+
     if (!addOn || !buyIn || !rebuy) {
       return Alert.alert(
         "Informe todos os valores para configurarmos seu torneio"
@@ -49,6 +116,15 @@ export function TournamentConfig() {
       buyIn: Number(buyIn),
       addOn: Number(addOn),
       rebuy: Number(rebuy),
+      prize: {
+        awardedNumber: Number(awardedNumber),
+        first: calculatePercentage(percentage1),
+        second: calculatePercentage(percentage2),
+        third: calculatePercentage(percentage3),
+        forth: calculatePercentage(percentage4),
+        fifth: calculatePercentage(percentage5),
+        sixth: calculatePercentage(percentage6),
+      },
     };
 
     Alert.alert(
@@ -61,6 +137,8 @@ export function TournamentConfig() {
 
     Rebuy:${configData.rebuy}
 
+    Número de premiados: ${configData.prize.awardedNumber}
+
     Tem certeza que deseja prosseguir ? 
     `,
       [
@@ -71,7 +149,7 @@ export function TournamentConfig() {
             Keyboard.dismiss();
             reset();
             Alert.alert("Torneio configurado! ");
-            handleNavigation()
+            handleNavigation();
           },
         },
         {
@@ -88,62 +166,115 @@ export function TournamentConfig() {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    <SafeAreaView style={{ flex: 1 }}>
-      <Container>
-        <Header>
-          <LogoImg source={Logo} alt="Logo image" />
-          <Title>Configure seu torneio</Title>
-        </Header>
-        <ConfigWrapper>
-          <Controller
-            control={control}
-            name="buyIn"
-            render={({ field: { onChange, onBlur, value } }) => {
-              return (
-                <ConfigInput
-                  label={"Buy-In"}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
-              );
-            }}
-          />
+      <SafeAreaView style={{ flex: 1 }}>
+        <Container>
+          <View>
+            <Header>
+              <LogoImg source={Logo} alt="Logo image" />
+              <Title>Configure seu torneio</Title>
+            </Header>
 
-          <Controller
-            control={control}
-            name="rebuy"
-            render={({ field: { onChange, onBlur, value } }) => {
-              return (
-                <ConfigInput
-                  label={"Rebuy"}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
-              );
-            }}
-          />
+            <Label>Valores:</Label>
 
-          <Controller
-            control={control}
-            name="addOn"
-            render={({ field: { onChange, onBlur, value } }) => {
-              return (
-                <ConfigInput
-                  label={"Add-On"}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                  onSubmitEditing={handleSubmit(handleConfigureTournament)}
+            <ConfigWrapper>
+              <Controller
+                control={control}
+                name="buyIn"
+                render={({ field: { onChange, onBlur, value } }) => {
+                  return (
+                    <ConfigInput
+                      label={"Buy-In"}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                    />
+                  );
+                }}
+              />
+
+              <Controller
+                control={control}
+                name="rebuy"
+                render={({ field: { onChange, onBlur, value } }) => {
+                  return (
+                    <ConfigInput
+                      label={"Rebuy"}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                    />
+                  );
+                }}
+              />
+
+              <Controller
+                control={control}
+                name="addOn"
+                render={({ field: { onChange, onBlur, value } }) => {
+                  return (
+                    <ConfigInput
+                      label={"Add-On"}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      onSubmitEditing={handleSubmit(handleConfigureTournament)}
+                    />
+                  );
+                }}
+              />
+            </ConfigWrapper>
+
+            <Label>Premiação:</Label>
+
+            <ConfigWrapper>
+              <View style={{ width: 150, height: 70 }}>
+                <Controller
+                  control={control}
+                  name="awardedNumber"
+                  render={({ field: { onChange, onBlur, value } }) => {
+                    setAwardedNumberValue(value);
+                    return (
+                      <ConfigInput
+                        label={"Nº de Premiados"}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                      />
+                    );
+                  }}
                 />
-              );
-            }}
+              </View>
+            </ConfigWrapper>
+
+            <ConfigWrapper>
+              {Array.from({ length: 3 }).map((_, index) => (
+                <ConfigInput
+                  label={`% ${index + 1}`}
+                  key={index}
+                  onChangeText={(value) => callSetPercentageArray(index, value)}
+                />
+              ))}
+            </ConfigWrapper>
+            <ConfigWrapper>
+              {Array.from({ length: Number(awardedNumberValue) - 3 }).map(
+                (_, index) => (
+                  <ConfigInput
+                    label={`% ${index + 4}`}
+                    key={index}
+                    onChangeText={(value) =>
+                      callSetPercentageArray(index + 3, value)
+                    }
+                  />
+                )
+              )}
+            </ConfigWrapper>
+          </View>
+          <Button
+            title={"Configurar"}
+            onPress={handleSubmit(handleConfigureTournament)}
           />
-        </ConfigWrapper>
-        <Button title={"Configurar"} onPress={handleSubmit(handleConfigureTournament)}/>
-      </Container>
-    </SafeAreaView>
+        </Container>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 }
