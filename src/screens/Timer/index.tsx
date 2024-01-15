@@ -14,6 +14,8 @@ import {
   Title,
 } from "./styles";
 
+import BackgroundTimer from 'react-native-background-timer';
+
 export function Timer() {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(15);
@@ -44,6 +46,26 @@ export function Timer() {
       setMinutes(15)
     }
   }
+
+  function startCountdown() {
+    setIsRunning(true);
+  }
+
+  function stopCountdown() {
+    setIsRunning(false);
+  }
+
+  function resetCountdown() {
+    if (blindCounter >= 5) {
+      setMinutes(12);
+      setSeconds(0);
+      return;
+    }
+
+    setMinutes(15);
+    setSeconds(0);
+  }
+
   useEffect(() => {
     let timeout: NodeJS.Timeout | undefined;
 
@@ -70,24 +92,33 @@ export function Timer() {
     };
   }, [isRunning, minutes, seconds]);
 
-  function startCountdown() {
-    setIsRunning(true);
-  }
+  useEffect(() => {
+    let backgroundTimer: number;
+  
+    if (isRunning) {
+      backgroundTimer = BackgroundTimer.setInterval(() => {
+        if (seconds === 0) {
+          if (minutes === 0) {
+            playSound();
+            setBlindCounter((state) => state + 1);
+            resetCountdown();
+            return;
+          }
 
-  function stopCountdown() {
-    setIsRunning(false);
-  }
-
-  function resetCountdown() {
-    if (blindCounter >= 5) {
-      setMinutes(12);
-      setSeconds(0);
-      return;
+          setMinutes((state) => state - 1);
+          setSeconds(59);
+        } else {
+          setSeconds((state) => state - 1);
+        }
+      }, 1000);
     }
-
-    setMinutes(15);
-    setSeconds(0);
-  }
+  
+    return () => {
+      if (backgroundTimer) {
+        BackgroundTimer.clearInterval(backgroundTimer);
+      }
+    };
+  }, [isRunning, minutes, seconds]);
 
   return (
     <ScrollView>
