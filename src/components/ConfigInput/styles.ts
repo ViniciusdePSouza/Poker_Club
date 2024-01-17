@@ -19,6 +19,7 @@ export const InputText = styled.TextInput`
   width: 100%;
 
   border-radius: 4px;
+  text-align: center;
   padding: 2px 4px;
   color: ${theme.COLORS.GRAY_700};
   background-color: ${theme.COLORS.GRAY_300};

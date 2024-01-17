@@ -12,6 +12,8 @@ export const Container = styled.TouchableOpacity`
   background-color: ${theme.COLORS.YELLOW_700};
 
   border-radius: 6px;
+
+  padding: 12px;
 `;
 
 export const ButtonText = styled.Text`
