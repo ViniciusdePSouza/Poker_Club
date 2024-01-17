@@ -42,7 +42,6 @@ const ConfigureTournamentSchema = yup.object({
   buyIn: yup.string(),
   rebuy: yup.string(),
   addOn: yup.string(),
-  awardedNumber: yup.string(),
 });
 
 export function TournamentConfig() {
@@ -108,14 +107,13 @@ export function TournamentConfig() {
     addOn,
     buyIn,
     rebuy,
-    awardedNumber,
   }: ConfigureTournamentData) {
-    if (awardedNumber == undefined) {
+    if (awardedNumberValue == undefined) {
       return Alert.alert("Informe o número de jogadores premiados");
     }
 
     let totalPercentage = 0;
-    for (let i = 0; i < Number(awardedNumber); i++) {
+    for (let i = 0; i < Number(awardedNumberValue); i++) {
       totalPercentage = totalPercentage + percentageArray[i];
     }
 
@@ -134,7 +132,7 @@ export function TournamentConfig() {
       addOn: Number(addOn),
       rebuy: Number(rebuy),
       prize: {
-        awardedNumber: Number(awardedNumber),
+        awardedNumber: awardedNumberValue,
         first: calculatePercentage(percentage1),
         second: calculatePercentage(percentage2),
         third: calculatePercentage(percentage3),
@@ -253,7 +251,7 @@ export function TournamentConfig() {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: 12,
+                    gap: 24,
                   }}
                 >
                   <AwardedNumberButton
@@ -263,7 +261,7 @@ export function TournamentConfig() {
                     <Icon type="ant-design" name="minus" />
                   </AwardedNumberButton>
                   <NumberAwardedPlayersView>
-                    <LabelAwardedNumber>Número de premiados</LabelAwardedNumber>
+                    <LabelAwardedNumber>Nº de premiados</LabelAwardedNumber>
 
                     <AwardedNumberText>{awardedNumberValue}</AwardedNumberText>
                   </NumberAwardedPlayersView>
@@ -279,7 +277,7 @@ export function TournamentConfig() {
               <ConfigWrapper>
                 {Array.from({ length: 3 }).map((_, index) => (
                   <ConfigInput
-                    label={`% ${index + 1}`}
+                    label={`% ${index + 1}º`}
                     key={index}
                     onChangeText={(value) =>
                       callSetPercentageArray(index, value)
@@ -291,7 +289,7 @@ export function TournamentConfig() {
                 {Array.from({ length: Number(awardedNumberValue) - 3 }).map(
                   (_, index) => (
                     <ConfigInput
-                      label={`% ${index + 4}`}
+                      label={`% ${index + 4}º`}
                       key={index}
                       onChangeText={(value) =>
                         callSetPercentageArray(index + 3, value)
