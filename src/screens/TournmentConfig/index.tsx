@@ -1,3 +1,6 @@
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['new NativeEventEmitter']);
+
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "../../components/Button";
 import {
@@ -16,7 +19,6 @@ import {
   Alert,
   Keyboard,
   SafeAreaView,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";

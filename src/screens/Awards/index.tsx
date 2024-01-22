@@ -141,7 +141,7 @@ export function Awards() {
           <Title>Informações do dinheiro</Title>
 
           <AwardCard
-            title={"Total arrecadado"}
+            title={"Arrecadado"}
             iconName={"money"}
             iconType="font-awesome"
             content={formatter.format(totalMoney).toString()}
